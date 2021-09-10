@@ -10,11 +10,12 @@ saveButton.addEventListener('click', formSubmitHandler);
 
 function editProfile() {
   let popup = document.querySelector('.popup');
+  let inputs = document.querySelectorAll('input');
   let name = document.querySelector('.profile__user-name').textContent;
   let job = document.querySelector('.profile__user-job').textContent;
   popup.classList.add('popup_opened');
-  document.querySelector('.input__field_name').value = name;
-  document.querySelector('.input__field_job').value = job;
+  inputs[0].value = name;
+  inputs[1].value = job;
 }
 
 function closeForm() {
@@ -23,13 +24,12 @@ function closeForm() {
 }
 
 function formSubmitHandler(evt) {
-  let nameInput = document.querySelector('.input__field_name').value;
-  let jobInput = document.querySelector('.input__field_job').value;
+  let inputs = document.querySelectorAll('input');
   let name = document.querySelector('.profile__user-name');
   let job = document.querySelector('.profile__user-job');
   let popup = document.querySelector('.popup');
   evt.preventDefault();
-  name.textContent = nameInput;
-  job.textContent = jobInput;
+  name.textContent = inputs[0].value;
+  job.textContent = inputs[1].value;
   popup.classList.remove('popup_opened');
 }
