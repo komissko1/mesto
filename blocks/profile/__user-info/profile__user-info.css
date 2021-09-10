@@ -1,0 +1,30 @@
+.profile__user-info {
+  margin: 0;
+  padding-left: 30px;
+  max-width: 336px;
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  grid-auto-rows: min-content;
+  gap: 16px 18px;
+  color: #ffffff;
+  align-items: baseline;
+  /* justify-items: space-between; */
+}
+
+@media screen and (max-width: 1024px) {
+  .profile__user-info {
+    padding-top: 22px;
+    padding-left: 0;
+    box-sizing: border-box;
+    width: 100%;
+    grid-template-columns: 1fr 18px;
+    gap: 10px 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .profile__user-info {
+    padding-right: 19px;
+    padding-bottom: 36px;
+  }
+}

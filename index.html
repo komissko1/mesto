@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./pages/index.css" />
+    <title>Mesto</title>
+  </head>
+  <body class="root">
+    <div class="root root__container">
+      <header class="page-header">
+        <a href="#"
+          ><img
+            class="page-header__logo link-effect"
+            src="images/logo.svg"
+            alt="Место"
+        /></a>
+      </header>
+
+      <main class="content">
+        <section class="profile content__profile">
+          <div class="profile__user">
+            <div class="profile__user-foto"></div>
+            <div class="profile__user-info">
+              <h1 class="profile__user-name">Жак-Ив Кусто</h1>
+              <button
+                type="button"
+                class="profile__edit-button button-effect">
+              </button>
+              <h2 class="profile__user-job">Исследователь океана</h2>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="profile__add-button button-effect">
+          </button>
+        </section>
+
+        <section class="places content__places">
+          <figure class="place">
+            <img
+              class="place__image"
+              src="images/karachaevsk.jpg"
+              alt="karachaevsk"
+            />
+            <figcaption class="place__caption">
+              <h3 class="place__name">Карачаевск</h3>
+              <button
+                type="button"
+                class="place__like">
+              </button>
+            </figcaption>
+          </figure>
+          <figure class="place">
+            <img
+              class="place__image"
+              src="images/elbrus.jpg"
+              alt="karachaevsk"
+            />
+            <figcaption class="place__caption">
+              <h3 class="place__name">Гора Эльбрус</h3>
+              <button
+                type="button"
+                class="place__like">
+              </button>
+            </figcaption>
+          </figure>
+          <figure class="place">
+            <img
+              class="place__image"
+              src="images/dombai.jpg"
+              alt="karachaevsk"
+            />
+            <figcaption class="place__caption">
+              <h3 class="place__name">Домбай</h3>
+              <button
+                type="button"
+                class="place__like">
+              </button>
+            </figcaption>
+          </figure>
+          <figure class="place">
+            <img
+              class="place__image"
+              src="images/mururoa.jpg"
+              alt="karachaevsk"
+            />
+            <figcaption class="place__caption">
+              <h3 class="place__name">Атолл Муруроа</h3>
+              <button
+                type="button"
+                class="place__like">
+              </button>
+            </figcaption>
+          </figure>
+          <figure class="place">
+            <img
+              class="place__image"
+              src="images/semipalatinsk.jpg"
+              alt="karachaevsk"
+            />
+            <figcaption class="place__caption">
+              <h3 class="place__name">Семипалатинск</h3>
+              <button
+                type="button"
+                class="place__like">
+              </button>
+            </figcaption>
+          </figure>
+          <figure class="place">
+            <img
+              class="place__image"
+              src="images/novayazemlya.jpg"
+              alt="karachaevsk"
+            />
+            <figcaption class="place__caption">
+              <h3 class="place__name">Новая Земля</h3>
+              <button
+                type="button"
+                class="place__like">
+              </button>
+            </figcaption>
+          </figure>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <p class="page-footer__info">© 2020 Mesto Russia</p>
+      </footer>
+    </div>
+
+    <div class="popup">
+      <form class="popup__container">
+        <button
+          type="button"
+          class="popup__close-button button-effect"
+        ></button>
+        <p class="popup__title">Редактировать профиль</p>
+        <input
+          class="popup__field input__field_name"
+          type="text"
+          placeholder=""
+        />
+        <input
+          class="popup__field input__field_job"
+          type="text"
+          placeholder=""
+        />
+        <button
+          type="submit"
+          class="popup__save-button"
+          >Сохранить
+        </button>
+      </form>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
