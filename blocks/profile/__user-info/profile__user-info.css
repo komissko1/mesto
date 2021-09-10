@@ -16,7 +16,7 @@
     padding-left: 0;
     box-sizing: border-box;
     width: 100%;
-    grid-template-columns: min-content minmax(18px, max-content);
+    grid-template-columns: minmax(min-content, 1fr) minmax(18px, max-content);
     gap: 10px 14px;
     justify-content: center;
   }
