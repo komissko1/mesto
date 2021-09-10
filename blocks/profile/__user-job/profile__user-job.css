@@ -1,6 +1,7 @@
 .profile__user-job {
   margin: 0;
   padding: 0;
+  max-width: 450px;
   font-weight: 400;
   font-size: 18px;
   line-height: 22px;
