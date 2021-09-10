@@ -6,6 +6,6 @@
 
 @media screen and (max-width: 320px) {
   .content__places {
-    width: calc(100% - 19px*2)
+    width: calc(100% - 19px*2);
   }
 }
