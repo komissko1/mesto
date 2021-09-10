@@ -9,16 +9,23 @@
   overflow: hidden;
 }
 
+@media screen and (max-width: 1024px) {
+  .profile__user-name {
+    text-align: center;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .profile__user-name {
     font-size: calc(27px + (42 - 27) * (100vw - 320px) / (768 - 320));
     line-height: calc(33px + (48 - 33) * (100vw - 320px) / (768 - 320));
-    text-align: right;
+    padding-left: calc(28px - (28 * (100% - 320px) / (768 - 320)));
   }
 }
 
 @media screen and (max-width: 320px) {
   .profile__user-name {
+    padding-left: 28px;
     font-size: 27px;
     line-height: 33px;
   }
