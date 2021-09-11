@@ -1,11 +1,9 @@
 .profile__user-foto {
   margin: 0;
   padding: 0;
-  min-width: 120px;
-  background-image: url(../../../images/avatar.jpg);
-  background-position: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
+  max-width: 120px;
+  object-position: center;
+  object-fit: cover;
   box-sizing: border-box;
   display: flex;
   border-radius: 50%;

@@ -23,9 +23,4 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-  .profile__user-info {
-    padding-bottom: 33px;
-  }
-}
 

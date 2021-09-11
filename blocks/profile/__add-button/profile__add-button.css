@@ -13,6 +13,7 @@
   box-sizing: border-box;
   align-self: center;
   transition: opacity .3s ease-in-out;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1024px) {
