@@ -1,21 +1,16 @@
-.place__like {
+.place__like-button {
   margin: 0;
   padding: 0;
   min-width: 22px;
   min-height: 22px;
   background-color: #ffffff;
-  background-image: url(../../../images/like.svg);
   background-position: center;
   border-style: none;
   background-repeat: no-repeat;
   transition: opacity .3s ease-in-out;
 }
 
-.place__like:hover {
+.place__like-button:hover {
   opacity: 50%;
 }
 
-.place__like:active {
-  background-image: url(../../../images/like-active.svg);
-  opacity: 1;
-}

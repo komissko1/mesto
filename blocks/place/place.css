@@ -6,4 +6,5 @@ background: #FFFFFF;
 border-radius: 10px;
 overflow: hidden;
 font-size: 0;
+position: relative;
 }
