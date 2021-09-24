@@ -42,8 +42,7 @@
           ></button>
         </section>
 
-        <section class="places content__places" aria-label="Места">
-        </section>
+        <section class="places content__places" aria-label="Места"></section>
       </main>
 
       <footer class="page-footer">
@@ -54,22 +53,22 @@
     <div class="popup popup_type_edit">
       <form class="popup__container" name="edit-form">
         <button
-        type="button"
-        aria-label="Закрыть"
-        class="popup__close-button button-effect"
+          type="button"
+          aria-label="Закрыть"
+          class="popup__close-button button-effect"
         ></button>
         <h3 class="popup__title">Редактировать профиль</h3>
         <input
-        class="popup__field"
-        type="text"
-        id="userName"
-        placeholder="Имя"
+          class="popup__field"
+          type="text"
+          id="userName"
+          placeholder="Имя"
         />
         <input
-        class="popup__field"
-        type="text"
-        id="userJob"
-        placeholder="Занятие"
+          class="popup__field"
+          type="text"
+          id="userJob"
+          placeholder="Занятие"
         />
         <button type="submit" class="popup__save-button">Сохранить</button>
       </form>
@@ -95,7 +94,10 @@
           id="placeImg"
           placeholder="Ссылка на картинку"
         />
-        <button type="submit" class="popup__save-button">Сохранить</button>
+        <button
+          type="submit"
+          class="popup__save-button"
+        >Сохранить</button>
       </form>
     </div>
 
@@ -117,7 +119,10 @@
 
     <template id="card-template">
       <article class="place">
-        <button type="button" class="place__image-button">
+        <button
+          type="button"
+          class="place__image-button"
+        >
           <img
             class="place__image"
             src="#"
@@ -126,9 +131,15 @@
         </button>
         <div class="place__caption">
           <h2 class="place__name">Название места</h2>
-          <button type="button" class="place__like-button place__like-button_inactive"></button>
+          <button
+            type="button"
+            class="place__like-button place__like-button_inactive"
+          ></button>
         </div>
-        <button type="button" class="place__trash-button link-effect"></button>
+        <button
+          type="button"
+          class="place__trash-button link-effect"
+        ></button>
       </article>
     </template>
 

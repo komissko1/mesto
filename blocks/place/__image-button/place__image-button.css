@@ -6,4 +6,11 @@
   max-height: 282px;
   border-style: none;
   cursor: pointer;
+  transition: border .3s ease-in-out;
 }
+
+.place__image-button:hover {
+  border: solid 5px #ffffff;
+}
+
+
