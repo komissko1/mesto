@@ -93,6 +93,8 @@ function editProfile() {
 }
 
 function addCard() {
+  inputPlaceName.value = "";
+  inputPlaceImg.value = "";
   openPopup(popupAdd);
 }
 
