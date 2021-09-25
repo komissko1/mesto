@@ -53,7 +53,7 @@ for (var i = 0; i < initialCards.length; i++) {
 editButton.addEventListener("click", editProfile);
 addButton.addEventListener("click", addCard);
 closeButtons.forEach((button) => {
-  button.addEventListener("click", closePopup);
+  button.addEventListener("click", closeModal);
 });
 saveEditButton.addEventListener("click", submitProfile);
 saveAddButton.addEventListener("click", submitCard);
@@ -62,9 +62,13 @@ function openPopup(popup) {
   popup.classList.add('popup_opened');
 }
 
-function closePopup(evt) {
-  const openedPopup = evt.target.closest(".popup_opened")
-  openedPopup.classList.remove("popup_opened");
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
+
+function closeModal(evt) {
+  const currentPopup = evt.target.closest(".popup_opened");
+  closePopup(currentPopup);
 }
 
 function createCard(placeTitle, placeImageSrc) {
@@ -113,14 +117,15 @@ function submitProfile(evt) {
   evt.preventDefault();
   userName.textContent = inputName.value;
   userJob.textContent = inputJob.value;
-  closePopup(evt);
+  closePopup(popupEdit);
 }
 
 function submitCard(evt) {
   evt.preventDefault();
   const cardContent =  createCard(inputPlaceName.value, inputPlaceImg.value);
+  const currentPopup = evt.target.closest(".popup_opened");
   cardContainer.prepend(cardContent);
-  closePopup(evt)
+  closePopup(popupAdd);
 }
 
 function deleteCard(evt) {
