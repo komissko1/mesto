@@ -66,8 +66,8 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
 
-function closeModal(evt) {
-  const currentPopup = evt.target.closest(".popup_opened");
+function closeModal() {
+  const currentPopup = document.querySelector(".popup_opened");
   closePopup(currentPopup);
 }
 
