@@ -22,15 +22,19 @@ const setFormEventListeners = (formElement, indexes) => {
   });
   switch (formElement.name) {
     case "add-form":
-      buttonElement.addEventListener("click", submitCard);
+      buttonElement.addEventListener("click", submitAddCard);
+    break;
+
     case "edit-form":
-      buttonElement.addEventListener("click", submitProfile);
+      buttonElement.addEventListener("click", submitEditProfile);
+    break;
   }
   inputList.forEach((inputField) => {
     inputField.addEventListener("input", () => {
       checkInputValidity(inputField, indexes);
       toggleButtonState(inputList, buttonElement, indexes);
       });
+    inputField.addEventListener("keydown", keyHandler)
     });
 };
 
@@ -70,6 +74,21 @@ function hasInvalidInput(inputList) {
   return inputList.some((inputField) => {
     return !inputField.validity.valid;
   });
+}
+
+function keyHandler(evt, indexes) {
+  if (evt.key === "Enter") {
+    const currentForm = evt.target.closest(indexes.formSelector);
+    const inputList = Array.from(currentForm.querySelectorAll(indexes.inputSelector));
+    switch (hasInvalidInput(inputList)) {
+      case false:
+        if (currentForm.name === "add-form") {submitAddCard}
+        else {submitEditProfile}
+      break;
+      case true:
+        return;
+    }
+  }
 }
 
 enableValidation(indexes);

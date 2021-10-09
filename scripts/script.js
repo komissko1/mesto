@@ -73,21 +73,20 @@ function closeModal(evt) {
   const currentPopup = document.querySelector(".popup_opened");
   const checkCloseButton = closeButtonsArray.some( (button) => {return button === evt.target;})
   const checkSubmitButton = (evt.target === saveEditButton || evt.target === saveAddButton)
-  console.log(currentPopup);
-  if (evt.target === currentPopup || checkCloseButton|| checkSubmitButton || evt.key === "Escape")  {
+  if (evt.target === currentPopup || checkCloseButton || checkSubmitButton || evt.key === "Escape")  {
     closePopup(currentPopup);
     currentPopup.removeEventListener("click", closeModal)
     document.removeEventListener("keydown", closeModal);
   } else return
 }
 
-function createCard(placeTitle, placeImageSrc) {
+function createCard(placeName, placeImg) {
   const cardContent = cardTemplate.cloneNode(true);
-  const placeName = cardContent.querySelector(".place__name");
+  const placeCaption = cardContent.querySelector(".place__name");
   const placeImage = cardContent.querySelector(".place__image");
-  placeName.textContent = placeTitle;
-  placeImage.src = placeImageSrc;
-  placeImage.alt = placeTitle;
+  placeImage.src = placeImg;
+  placeImage.alt = placeName;
+  placeCaption.textContent = placeName;
   cardContent
   .querySelector(".place__trash-button")
   .addEventListener("click", deleteCard);
@@ -100,8 +99,7 @@ function createCard(placeTitle, placeImageSrc) {
   return cardContent;
 }
 
-function openEditProfile(evt) {
-  evt.preventDefault();
+function openEditProfile() {
   inputName.value = userName.textContent;
   inputJob.value = userJob.textContent;
   setEventListeners(popupEdit);
@@ -109,8 +107,7 @@ function openEditProfile(evt) {
   openPopup(popupEdit);
 }
 
-function openAddCard(evt) {
-  evt.preventDefault();
+function openAddCard() {
   inputPlaceName.value = "";
   inputPlaceImg.value = "";
   setEventListeners(popupAdd);
@@ -119,7 +116,6 @@ function openAddCard(evt) {
 }
 
 function openViewImage(evt) {
-  evt.preventDefault();
   const cardContent = evt.target.closest(".place");
   const cardImage = cardContent.querySelector(".place__image")
   const popupImage = popupImageView.querySelector(".popup__image")
@@ -131,22 +127,19 @@ function openViewImage(evt) {
 }
 
 
-function submitProfile(evt) {
-  evt.preventDefault();
+function submitEditProfile(evt) {
   userName.textContent = inputName.value;
   userJob.textContent = inputJob.value;
   closeModal(evt);
 }
 
-function submitCard(evt) {
-  evt.preventDefault();
+function submitAddCard(evt) {
   const cardContent =  createCard(inputPlaceName.value, inputPlaceImg.value);
   cardContainer.prepend(cardContent);
   closeModal(evt);
 }
 
 function deleteCard(evt) {
-  evt.preventDefault();
   const currentCard = evt.target.closest(".place")
   currentCard.querySelector(".place__trash-button").removeEventListener("click", deleteCard)
   currentCard.querySelector(".place__like-button").removeEventListener("click", addLike)
