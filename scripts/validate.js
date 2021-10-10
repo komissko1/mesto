@@ -19,16 +19,8 @@ const setFormEventListeners = (formElement, indexes) => {
   const buttonElement = formElement.querySelector(indexes.submitButtonSelector);
   formElement.addEventListener("submit", (evt) => {
     evt.preventDefault();
+    submitForm(evt);
   });
-  switch (formElement.name) {
-    case "add-form":
-      buttonElement.addEventListener("click", submitAddCard);
-    break;
-
-    case "edit-form":
-      buttonElement.addEventListener("click", submitEditProfile);
-    break;
-  }
   inputList.forEach((inputField) => {
     inputField.addEventListener("input", () => {
       checkInputValidity(inputField, indexes);
@@ -76,18 +68,14 @@ function hasInvalidInput(inputList) {
   });
 }
 
-function keyHandler(evt, indexes) {
+function keyHandler(evt) {
   if (evt.key === "Enter") {
-    const currentForm = evt.target.closest(indexes.formSelector);
-    const inputList = Array.from(currentForm.querySelectorAll(indexes.inputSelector));
-    switch (hasInvalidInput(inputList)) {
-      case false:
-        if (currentForm.name === "add-form") {submitAddCard}
-        else {submitEditProfile}
-      break;
-      case true:
-        return;
-    }
+    console.log(indexes);
+    const formElement = evt.target.closest(indexes.formSelector);
+    const inputList = Array.from(formElement.querySelectorAll(indexes.inputSelector));
+    if (hasInvalidInput(inputList) === false) {
+      submitForm(evt);
+    } else return
   }
 }
 
