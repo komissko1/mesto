@@ -79,5 +79,7 @@ function keyHandler(evt) {
   }
 }
 
+// ============== main body ===================
+
 enableValidation(indexes);
 

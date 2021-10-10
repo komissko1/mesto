@@ -66,8 +66,7 @@ function setPopupsEventListeners() {
 }
 
 function closeModal(evt) {
-  // evt.preventDefault();
-  console.log(evt);
+  evt.stopPropagation();
   const currentPopup = document.querySelector(".popup_opened");
   const checkCloseButton = closeButtonsArray.some( (button) => {return button === evt.target;})
   const checkSubmitButton = (evt.target === saveEditButton || evt.target === saveAddButton)
@@ -114,7 +113,6 @@ function openForm (evt) {
 }
 
 function openViewImage(evt) {
-  // evt.preventDefault();
   const cardContent = evt.target.closest(".place");
   const cardImage = cardContent.querySelector(".place__image")
   const popupImage = popupImageView.querySelector(".popup__image")
@@ -125,7 +123,6 @@ function openViewImage(evt) {
 }
 
 function submitForm (evt) {
-  // evt.preventDefault();
   const formElement = evt.target.closest(".form");
   switch(formElement.name) {
     case "add-form":
