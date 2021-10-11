@@ -5,8 +5,6 @@ const popups = document.querySelectorAll(".popup")
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
-const closeButtons = document.querySelectorAll(".popup__close-button");
-const closeButtonsArray = Array.from(closeButtons);
 const saveEditButton = popupEdit.querySelector(".form__save-button");
 const saveAddButton = popupAdd.querySelector(".form__save-button");
 
@@ -49,106 +47,100 @@ const initialCards = [
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  document.addEventListener("keydown", closeModal);
+  document.addEventListener("keydown", closeByEscape);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener("keydown", closeModal);
+  document.removeEventListener("keydown", closeByEscape);
 }
 
-function setPopupsEventListeners() {
-  popups.forEach((popup) => {
-    const closeButton = popup.querySelector(".popup__close-button");
-    popup.addEventListener("click", closeModal);
-    closeButton.addEventListener("click", closeModal);
-  })
-}
-
-function closeModal(evt) {
-  evt.stopPropagation();
-  const currentPopup = document.querySelector(".popup_opened");
-  const checkCloseButton = closeButtonsArray.some( (button) => {return button === evt.target;})
-  const checkSubmitButton = (evt.target === saveEditButton || evt.target === saveAddButton)
-  if (evt.target === currentPopup || checkCloseButton || checkSubmitButton || evt.key === "Escape")  {
-    closePopup(currentPopup);
-  } else return
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened')
+    closePopup(openedPopup);
+  }
 }
 
 function createCard(placeName, placeImg) {
   const cardContent = cardTemplate.cloneNode(true);
-  const placeCaption = cardContent.querySelector(".place__name");
-  const placeImage = cardContent.querySelector(".place__image");
+  const placeCaption = cardContent.querySelector('.place__name');
+  const placeImage = cardContent.querySelector('.place__image');
   placeImage.src = placeImg;
   placeImage.alt = placeName;
   placeCaption.textContent = placeName;
   cardContent
-  .querySelector(".place__trash-button")
+  .querySelector('.place__trash-button')
   .addEventListener("click", deleteCard);
   cardContent
-  .querySelector(".place__like-button")
+  .querySelector('.place__like-button')
   .addEventListener("click", addLike);
   cardContent
-  .querySelector(".place__image-button")
+  .querySelector('.place__image-button')
   .addEventListener("click", openViewImage);
   return cardContent;
 }
 
-function openForm (evt) {
+function openAddForm () {
+  inputPlaceName.value = "";
+  inputPlaceImg.value = "";
+  toggleButtonState([inputPlaceName, inputPlaceImg] , saveAddButton, indexes);
+  openPopup(popupAdd);
+}
 
-  switch(evt.target) {
-    case addButton:
-      inputPlaceName.value = "";
-      inputPlaceImg.value = "";
-      toggleButtonState([inputPlaceName, inputPlaceImg] , saveAddButton, indexes);
-      openPopup(popupAdd);
-    break;
-    case editButton:
-      inputName.value = userName.textContent;
-      inputJob.value = userJob.textContent;
-      toggleButtonState([inputName, inputJob] , saveEditButton, indexes);
-      openPopup(popupEdit);
-    break;
-  }
+function openEditForm () {
+  inputName.value = userName.textContent;
+  inputJob.value = userJob.textContent;
+  toggleButtonState([inputName, inputJob] , saveEditButton, indexes);
+  openPopup(popupEdit);
 }
 
 function openViewImage(evt) {
-  const cardContent = evt.target.closest(".place");
-  const cardImage = cardContent.querySelector(".place__image")
-  const popupImage = popupImageView.querySelector(".popup__image")
+  const cardContent = evt.target.closest('.place');
+  const cardImage = cardContent.querySelector('.place__image')
+  const popupImage = popupImageView.querySelector('.popup__image')
   popupImage.src = cardImage.src;
   popupImage.alt = cardImage.alt;
-  popupImageView.querySelector(".popup__img-title").textContent = cardContent.querySelector(".place__name").textContent;
+  popupImageView.querySelector('.popup__img-title').textContent = cardContent.querySelector('.place__name').textContent;
   openPopup(popupImageView);
 }
 
 function submitForm (evt) {
-  const formElement = evt.target.closest(".form");
+  const formElement = evt.target.closest('.form');
   switch(formElement.name) {
     case "add-form":
-      const cardContent =  createCard(inputPlaceName.value, inputPlaceImg.value);
-      cardContainer.prepend(cardContent);
+      submitAddForm();
     break;
     case "edit-form":
-      userName.textContent = inputName.value;
-      userJob.textContent = inputJob.value;
+      submitEditForm();
     break;
   }
-  closeModal(evt);
+}
+
+function submitAddForm () {
+  const cardContent =  createCard(inputPlaceName.value, inputPlaceImg.value);
+  cardContainer.prepend(cardContent);
+  closePopup(popupAdd);
+}
+
+function submitEditForm () {
+  userName.textContent = inputName.value;
+  userJob.textContent = inputJob.value;
+  closePopup(popupEdit);
 }
 
 function deleteCard(evt) {
-  const currentCard = evt.target.closest(".place")
-  currentCard.querySelector(".place__trash-button").removeEventListener("click", deleteCard)
-  currentCard.querySelector(".place__like-button").removeEventListener("click", addLike)
-  currentCard.querySelector(".place__image-button").removeEventListener("click", openViewImage)
+  const currentCard = evt.target.closest('.place')
+  currentCard.querySelector('.place__trash-button').removeEventListener("click", deleteCard)
+  currentCard.querySelector('.place__like-button').removeEventListener("click", addLike)
+  currentCard.querySelector('.place__image-button').removeEventListener("click", openViewImage)
   currentCard.remove();
 }
 
 function addLike(evt) {
   evt.preventDefault();
-  evt.target.classList.toggle("place__like-button_active");
-  evt.target.classList.toggle("place__like-button_inactive");
+  evt.target.classList.toggle('place__like-button_active');
+  evt.target.classList.toggle('place__like-button_inactive');
 }
 
 // ============== main body ===================
@@ -156,9 +148,20 @@ function addLike(evt) {
 initialCards.forEach((card) => {
   const cardContent = createCard(card.name, card.link);
   cardContainer.append(cardContent);
+});
+editButton.addEventListener("click", openEditForm);
+addButton.addEventListener("click", openAddForm);
+popups.forEach((popup) => {
+    popup.addEventListener('click', (evt) => {
+        if (evt.target.classList.contains('popup_opened')) {
+            closePopup(popup)
+        }
+        if (evt.target.classList.contains('popup__close-button')) {
+          closePopup(popup)
+        }
+    })
 })
-setPopupsEventListeners();
-editButton.addEventListener("click", openForm);
-addButton.addEventListener("click", openForm);
+
+
 
 

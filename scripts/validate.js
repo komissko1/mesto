@@ -26,7 +26,6 @@ const setFormEventListeners = (formElement, indexes) => {
       checkInputValidity(inputField, indexes);
       toggleButtonState(inputList, buttonElement, indexes);
       });
-    inputField.addEventListener("keydown", keyHandler)
     });
 };
 
@@ -68,16 +67,6 @@ function hasInvalidInput(inputList) {
   });
 }
 
-function keyHandler(evt) {
-  if (evt.key === "Enter") {
-    console.log(indexes);
-    const formElement = evt.target.closest(indexes.formSelector);
-    const inputList = Array.from(formElement.querySelectorAll(indexes.inputSelector));
-    if (hasInvalidInput(inputList) === false) {
-      submitForm(evt);
-    } else return
-  }
-}
 
 // ============== main body ===================
 
