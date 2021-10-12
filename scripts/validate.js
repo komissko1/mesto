@@ -15,18 +15,19 @@ const enableValidation = (indexes) => {
 };
 
 const setFormEventListeners = (formElement, indexes) => {
-  const inputList = Array.from(formElement.querySelectorAll(indexes.inputSelector));
+  const inputList = Array.from(
+    formElement.querySelectorAll(indexes.inputSelector)
+  );
   const buttonElement = formElement.querySelector(indexes.submitButtonSelector);
   formElement.addEventListener("submit", (evt) => {
     evt.preventDefault();
-    submitForm(evt);
   });
   inputList.forEach((inputField) => {
     inputField.addEventListener("input", () => {
       checkInputValidity(inputField, indexes);
       toggleButtonState(inputList, buttonElement, indexes);
-      });
     });
+  });
 };
 
 const checkInputValidity = (inputField, indexes) => {
@@ -67,8 +68,6 @@ function hasInvalidInput(inputList) {
   });
 }
 
-
 // ============== main body ===================
 
 enableValidation(indexes);
-
