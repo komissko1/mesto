@@ -58,8 +58,7 @@ const inputPlaceImg = popupAdd.querySelector("#placeImg");
 
 function submitAddForm() {
   const cardInfo = { name: inputPlaceName.value, link: inputPlaceImg.value };
-  const card = new Card(cardInfo, cardTemplate);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(cardInfo, cardTemplate);
   cardContainer.prepend(cardElement);
   closePopup(popupAdd);
 }
@@ -70,31 +69,37 @@ function submitEditForm() {
   closePopup(popupEdit);
 }
 
+function createCard(cardInfo, cardTemplate) {
+  const card = new Card(cardInfo, cardTemplate);
+  const cardElement = card.generateCard();
+  return cardElement;
+}
+
 function openAddForm() {
   inputPlaceName.value = "";
   inputPlaceImg.value = "";
+  addFormValidation.resetValidation();
   openPopup(popupAdd);
 }
 
 function openEditForm() {
   inputName.value = userName.textContent;
   inputJob.value = userJob.textContent;
+  editFormValidation.resetValidation();
   openPopup(popupEdit);
 }
 
 // ============== main body ===================
 
 initialCards.forEach((cardInfo) => {
-  const card = new Card(cardInfo, cardTemplate);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(cardInfo, cardTemplate);
   cardContainer.append(cardElement);
 });
 
-const formList = Array.from(document.querySelectorAll(indexes.formSelector));
-formList.forEach((formElement) => {
-  const form = new FormValidator(indexes, formElement);
-  form.setValidation();
-});
+const addFormValidation = new FormValidator(indexes, addForm);
+const editFormValidation = new FormValidator(indexes, editForm);
+addFormValidation.setValidation();
+editFormValidation.setValidation();
 
 editButton.addEventListener("click", openEditForm);
 editForm.addEventListener("submit", submitEditForm);

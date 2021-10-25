@@ -1,5 +1,8 @@
 import { openPopup } from "./utils.js";
 
+const popupImageView = document.querySelector(".popup_type_image");
+const popupImage = popupImageView.querySelector(".popup__image");
+
 export class Card {
   constructor(card, cardTemplate) {
     this._src = card.link;
@@ -12,9 +15,9 @@ export class Card {
     return cardElement;
   }
 
-  _addLike() {
-    this.classList.toggle("place__like-button_active");
-    this.classList.toggle("place__like-button_inactive");
+  _addLike(evt) {
+    evt.target.classList.toggle("place__like-button_active");
+    evt.target.classList.toggle("place__like-button_inactive");
   }
 
   _setEventListeners() {
@@ -29,8 +32,8 @@ export class Card {
       .addEventListener("click", this._openViewImage);
   }
 
-  _deleteCard() {
-    const thisCard = this.closest(".place");
+  _deleteCard(evt) {
+    const thisCard = evt.target.closest(".place");
     thisCard
       .querySelector(".place__trash-button")
       .removeEventListener("click", this._deleteCard);
@@ -43,11 +46,9 @@ export class Card {
     thisCard.remove();
   }
 
-  _openViewImage() {
-    const thisCard = this.closest(".place");
+  _openViewImage(evt) {
+    const thisCard = evt.target.closest(".place");
     const cardImage = thisCard.querySelector(".place__image");
-    const popupImageView = document.querySelector(".popup_type_image");
-    const popupImage = popupImageView.querySelector(".popup__image");
     popupImage.src = cardImage.src;
     popupImage.alt = cardImage.alt;
     popupImageView.querySelector(".popup__img-title").textContent =
@@ -57,8 +58,9 @@ export class Card {
 
   generateCard() {
     this._element = this._getTemplate();
-    this._element.querySelector(".place__image").src = this._src;
-    this._element.querySelector(".place__image").alt = this._title;
+    this._cardImage = this._element.querySelector(".place__image");
+    this._cardImage.src = this._src;
+    this._cardImage.alt = this._title;
     this._element.querySelector(".place__name").textContent = this._title;
     this._setEventListeners();
     return this._element;
