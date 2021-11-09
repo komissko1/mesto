@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./pages/index.css" />
+    <!-- <link rel="stylesheet" href="./pages/index.css" /> -->
     <title>Mesto</title>
   </head>
   <body class="root">
@@ -12,7 +12,7 @@
         <a href="#"
           ><img
             class="page-header__logo link-effect"
-            src="images/logo.svg"
+            src="<%=require('./images/logo.svg')%>"
             alt="Место"
         /></a>
       </header>
@@ -21,7 +21,7 @@
         <section class="profile content__profile">
           <div class="profile__user">
             <img
-              src="./images/avatar.jpg"
+              src="<%=require('./images/avatar.jpg')%>"
               alt="Кусто"
               class="profile__user-foto"
             />
@@ -169,9 +169,13 @@
       </article>
     </template>
 
-    <script type="module" src="./scripts/index.js"></script>
-    <script type="module" src="./scripts/Card.js"></script>
-    <script type="module" src="./scripts/utils.js"></script>
-    <script type="module" src="./scripts/FormValidator.js"></script>
+    <!-- <script type="module" src="./pages/index.js"></script>
+    <script type="module" src="./components/Card.js"></script>
+    <script type="module" src="./components/FormValidator.js"></script>
+    <script type="module" src="./components/Popup.js"></script>
+    <script type="module" src="./components/PopupWithForm.js"></script>
+    <script type="module" src="./components/PopupWithimage.js"></script>
+    <script type="module" src="./components/Section.js"></script>
+    <script type="module" src="./components/UserInfo.js"></script> -->
   </body>
 </html>

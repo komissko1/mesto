@@ -19,6 +19,6 @@
 1. Подключенные шрифты - в папке "vendor/fonts"
 2. Изображения проекта - в папке "images"
 3. Стили блоков и элементов прописаны в папках "pages" и "blocks"
-4. Модули JavaScript - в папке "scripts"
+4. Модули JavaScript - в папках "components" и "pages"
 
 ### [Ссылка на проект в GitHub Pages](https://komissko1.github.io/mesto/)
