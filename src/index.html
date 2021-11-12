@@ -10,7 +10,7 @@
     <div class="root__container">
       <header class="page-header">
         <a href="#"
-          ><img
+        ><img
             class="page-header__logo link-effect"
             src="<%=require('./images/logo.svg')%>"
             alt="Место"
@@ -69,7 +69,7 @@
             maxlength="40"
             required
             />
-            <span class="form__input-error"></span>
+            <span class="form__input-error" id="userName-alert"></span>
           </label>
           <label class="form__field">
             <input
@@ -81,7 +81,7 @@
               maxlength="200"
               required
             />
-            <span class="form__input-error"></span>
+            <span class="form__input-error" id="userJob-alert"></span>
           </label>
           <button type="submit" class="form__save-button">Сохранить</button>
         </form>
@@ -107,7 +107,7 @@
               maxlength="30"
               required
             />
-            <span class="form__input-error"></span>
+            <span class="form__input-error" id="placeName-alert"></span>
           </label>
           <label class="form__field">
             <input
@@ -117,7 +117,7 @@
               placeholder="Ссылка на картинку"
               required
             />
-            <span class="form__input-error"></span>
+            <span class="form__input-error" id="placeImg-alert"></span>
           </label>
           <button
             type="submit"
@@ -176,6 +176,7 @@
     <script type="module" src="./components/PopupWithForm.js"></script>
     <script type="module" src="./components/PopupWithimage.js"></script>
     <script type="module" src="./components/Section.js"></script>
-    <script type="module" src="./components/UserInfo.js"></script> -->
+    <script type="module" src="./components/UserInfo.js"></script>
+    <script type="module" src="./components/constants.js"></script> -->
   </body>
 </html>

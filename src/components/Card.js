@@ -1,5 +1,5 @@
 export default class Card {
-  constructor({card, handleCardClick}, cardTemplate) {
+  constructor({ card, handleCardClick }, cardTemplate) {
     this._src = card.link;
     this._title = card.name;
     this._cardTemplate = cardTemplate;
@@ -11,9 +11,9 @@ export default class Card {
     return cardElement;
   }
 
-  _addLike(evt) {
-    evt.target.classList.toggle("place__like-button_active");
-    evt.target.classList.toggle("place__like-button_inactive");
+  _addLike() {
+    this.classList.toggle("place__like-button_active");
+    this.classList.toggle("place__like-button_inactive");
   }
 
   _setEventListeners() {
@@ -28,17 +28,11 @@ export default class Card {
       .addEventListener("click", this._handleCardClick);
   }
 
-  _deleteCard(evt) {
-    const thisCard = evt.target.closest(".place");
-    thisCard
-      .querySelector(".place__trash-button")
-      .removeEventListener("click", this._deleteCard);
-    thisCard
-      .querySelector(".place__like-button")
-      .removeEventListener("click", this._addLike);
-    thisCard
-      .querySelector(".place__image-button")
-      .removeEventListener("click", this._handleCardClick);
+  _deleteCard() {
+    const thisCard = this.closest(".place");
+    thisCard.querySelector(".place__trash-button").removeEventListener("click", this._deleteCard);
+    thisCard.querySelector(".place__like-button").removeEventListener("click", this._addLike);
+    thisCard.querySelector(".place__image-button").removeEventListener("click", this._handleCardClick);
     thisCard.remove();
   }
 

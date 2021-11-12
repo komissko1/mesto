@@ -18,17 +18,17 @@ export default class FormValidator {
   };
 
   _showInputError = (inputField, errorMessage) => {
-    const errorAlert = inputField.nextElementSibling;
+    const errorAlert = this._form.querySelector(`#${inputField.id}-alert`);
     inputField.classList.add(this._inputErrorClass);
     errorAlert.textContent = errorMessage;
     errorAlert.classList.add(this._errorClass);
   };
 
   _hideInputError = (inputField) => {
-    const errorAlert = inputField.nextElementSibling;
+    const errorAlert = this._form.querySelector(`#${inputField.id}-alert`);
     inputField.classList.remove(this._inputErrorClass);
-    errorAlert.classList.remove(this._errorClass);
     errorAlert.textContent = "";
+    errorAlert.classList.remove(this._errorClass);
   };
 
   _toggleButtonState() {

@@ -5,44 +5,7 @@ import PopupWithImage from "../components/PopupWithimage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import "./index.css";
-
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
-
-const indexes = {
-  formSelector: ".form",
-  inputSelector: ".form__input",
-  submitButtonSelector: ".form__save-button",
-  inactiveButtonClass: "form__save-button_inactive",
-  inputErrorClass: "form__input_type_error",
-  errorClass: "form__input-error_active",
-};
-
-export {indexes};
+import {formSelectorsConfig, initialCards} from "../components/constants.js"
 
 const cardContainer = document.querySelector(".places");
 const cardTemplate = document.querySelector("#card-template").content;
@@ -62,6 +25,9 @@ const inputJob = popupEdit.querySelector("#userJob");
 
 // ====Initial cards rendering========
 
+const popupWithImage = new PopupWithImage(popupImageView);
+popupWithImage.setEventListeners();
+
 const cardList = new Section(
   {
     data: initialCards,
@@ -69,9 +35,7 @@ const cardList = new Section(
       const card = new Card(
         {card: item,
         handleCardClick: (evt) => {
-          const popup = new PopupWithImage(popupImageView);
-          popup.setEventListeners();
-          popup.open(evt);
+          popupWithImage.open(card);
         }},
         cardTemplate
         );
@@ -91,10 +55,8 @@ const popupWithAddForm = new PopupWithForm({
     const cardInfo = popupWithAddForm.getCardInfo();
     const card = new Card(
       {card: cardInfo,
-      handleCardClick: (evt) => {
-        const popup = new PopupWithImage(popupImageView);
-        popup.setEventListeners();
-        popup.open(evt);
+        handleCardClick: (evt) => {
+          popupWithImage.open(card);
       }},
       cardTemplate
       );
@@ -104,7 +66,7 @@ const popupWithAddForm = new PopupWithForm({
   }
 });
 
-const addFormValidation = new FormValidator(indexes, addForm);
+const addFormValidation = new FormValidator(formSelectorsConfig, addForm);
 addFormValidation.setValidation();
 
 addButton.addEventListener("click", () => {
@@ -122,7 +84,6 @@ const popupWithEditForm = new PopupWithForm({
   popupSelector: popupEdit,
   submitForm: () =>{
     user.setUserInfo(inputName.value, inputJob.value);
-    user.updateUserInfo();
     popupWithEditForm.close();
   }
 });
@@ -135,7 +96,7 @@ editButton.addEventListener("click", () => {
 });
 popupWithEditForm.setEventListeners();
 
-const editFormValidation = new FormValidator(indexes, editForm);
+const editFormValidation = new FormValidator(formSelectorsConfig, editForm);
 editFormValidation.setValidation();
 
 
