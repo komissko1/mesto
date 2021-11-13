@@ -23,7 +23,7 @@ const userJobSelector = document.querySelector(".profile__user-job");
 const inputName = popupEdit.querySelector("#userName");
 const inputJob = popupEdit.querySelector("#userJob");
 
-// ====Сards rendering function========
+// ====Сards rendering function=========
 
 function cardRenderer(item, cardInsertionType) {
   const card = new Card(
