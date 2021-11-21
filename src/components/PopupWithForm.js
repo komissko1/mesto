@@ -20,7 +20,8 @@ export default class PopupWithForm extends Popup {
     this._getInputValues();
     this._cardInfo = {
       name: this._inputValues['placeName'],
-      link: this._inputValues['placeImg']
+      link: this._inputValues['placeImg'],
+      likes: {}
     };
     return this._cardInfo;
   }
