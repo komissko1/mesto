@@ -1,4 +1,5 @@
 import Popup from "./Popup.js";
+import {formSelectorsConfig} from "../utils/constants.js";
 
 export default class PopupWithWarning extends Popup {
   constructor({ popupSelector, submitForm }) {
@@ -8,6 +9,9 @@ export default class PopupWithWarning extends Popup {
   }
 
   setEventListeners() {
+    this._form.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+    });
     this._form.addEventListener("submit", this._submitForm);
     super.setEventListeners();
   }

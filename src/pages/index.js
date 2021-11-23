@@ -5,6 +5,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
+import PopupWithWarning from "../components/PopupWithWarning.js";
 // import "./index.css";
 import { formSelectorsConfig } from "../utils/constants.js";
 
@@ -14,6 +15,7 @@ const popupImageView = document.querySelector(".popup_type_image");
 
 const popupEdit = document.querySelector(".popup_type_edit");
 const popupAdd = document.querySelector(".popup_type_add");
+const popupDelete = document.querySelector(".popup_type_delete");
 const editButton = document.querySelector(".profile__edit-button");
 const editForm = popupEdit.querySelector(".form");
 const addButton = document.querySelector(".profile__add-button");
@@ -35,7 +37,6 @@ const apiConfig = {
 };
 var sectionWithCards;
 
-
 // ====Initial user and cards request=========
 
 function apiRequest() {
@@ -44,14 +45,14 @@ function apiRequest() {
     .then((user) => {
       currentUser.setUserInfo(user.name, user.about);
       currentUser.setUserAvatar(user.avatar);
-      initialCardsRendering(user);
+      initialCardsRendering(user._id);
     })
     .catch((err) => console.log(err));
 }
 
 // ====Initial cards rendering=========
 
-function initialCardsRendering(user) {
+function initialCardsRendering(userId) {
   api
     .getCardsData()
     .then((cards) => {
@@ -59,15 +60,7 @@ function initialCardsRendering(user) {
         {
           data: cards,
           renderer: (item) => {
-            if (user._id !== item.owner._id) {
-              sectionWithCards.appendItem(
-                cardRenderer(item, "deletButtonInvisible")
-              );
-            } else {
-              sectionWithCards.appendItem(
-                cardRenderer(item, "deletButtonVisible")
-              );
-            }
+            sectionWithCards.appendItem(cardRenderer(item, userId));
           },
         },
         cardContainer
@@ -79,28 +72,51 @@ function initialCardsRendering(user) {
 
 // ====Сards rendering function=========
 
-function cardRenderer(item, deleteButtonStyle) {
+function cardRenderer(item, userId) {
   const cardItem = new Card(
     {
       card: item,
       handleCardClick: () => {
         popupWithImage.open(cardItem);
       },
-      // handleLikeClick: (card) => {
-
-      // },
-      handleDeleteIconClick: () => {
-        console.log(item._id)
-        console.log(cardItem._id)
-        api
-          .deleteCardData(cardItem._id)
-          .then((res) => {return res})
+      handleLikeClick: () => {
+        if (cardItem.checkCurrentLikeState(userId)) {
+          api
+          .deleteLike(item._id)
+          .then(() => {
+            cardItem.setLikesState(userId)
+          })
           .catch((err) => console.log(err));
-      }
+        }
+        else {
+        api
+          .addLike(item._id)
+          .then(() => {
+            cardItem.setLikesState(userId)
+          })
+          .catch((err) => console.log(err));
+        }
+      },
+      handleDeleteIconClick: () => {
+        const popupWithDeleteWarning = new PopupWithWarning({
+          popupSelector: popupDelete,
+          submitForm: () => {
+            api
+              .deleteCardData(item._id)
+              .then(() => {
+                cardItem.deleteCard(cardItem);
+                popupWithDeleteWarning.close();
+              })
+              .catch((err) => console.log(err));
+          },
+        });
+        popupWithDeleteWarning.setEventListeners();
+        popupWithDeleteWarning.open();
+      },
     },
     cardTemplate
   );
-  const cardElement = cardItem.generateCard(deleteButtonStyle);
+  const cardElement = cardItem.generateCard(userId);
   return cardElement;
 }
 
@@ -122,10 +138,8 @@ const popupWithAddForm = new PopupWithForm({
     const cardInfo = popupWithAddForm.getCardInfo();
     api
       .postCardData(cardInfo.name, cardInfo.link)
-      .then(() => {
-        sectionWithCards.prependItem(
-          cardRenderer(cardInfo, "deletButtonVisible")
-        );
+      .then((res) => {
+        sectionWithCards.prependItem(cardRenderer(res, res.owner._id));
         popupWithAddForm.close();
       })
       .catch((err) => console.log(err));
@@ -135,10 +149,6 @@ const popupWithAddForm = new PopupWithForm({
 const addFormValidation = new FormValidator(formSelectorsConfig, addForm);
 addFormValidation.setValidation();
 
-addButton.addEventListener("click", () => {
-  addFormValidation.resetValidation();
-  popupWithAddForm.open();
-});
 popupWithAddForm.setEventListeners();
 
 // ====Popup with User Edit form ========
@@ -148,11 +158,26 @@ const user = new UserInfo(userNameSelector, userJobSelector);
 const popupWithEditForm = new PopupWithForm({
   popupSelector: popupEdit,
   submitForm: () => {
-    // const patchUserResult = api.patchUserData(inputName.value, inputJob.value);
-    user.setUserInfo(inputName.value, inputJob.value);
-    popupWithEditForm.close();
+    const patchUserResult = api
+      .patchUserData(inputName.value, inputJob.value)
+      .then(() => {
+        user.setUserInfo(inputName.value, inputJob.value);
+        popupWithEditForm.close();
+      })
+      .catch((err) => console.log(err));
   },
 });
+const editFormValidation = new FormValidator(formSelectorsConfig, editForm);
+editFormValidation.setValidation();
+
+popupWithEditForm.setEventListeners();
+
+// ====Popup with image ========
+
+const popupWithImage = new PopupWithImage(popupImageView);
+popupWithImage.setEventListeners();
+
+// ==== Edit button listener ========
 
 editButton.addEventListener("click", () => {
   const userData = user.getUserInfo();
@@ -160,10 +185,10 @@ editButton.addEventListener("click", () => {
   inputJob.value = userData.job;
   popupWithEditForm.open();
 });
-popupWithEditForm.setEventListeners();
 
-const popupWithImage = new PopupWithImage(popupImageView);
-popupWithImage.setEventListeners();
+// ==== Add card button listener ========
 
-const editFormValidation = new FormValidator(formSelectorsConfig, editForm);
-editFormValidation.setValidation();
+addButton.addEventListener("click", () => {
+  addFormValidation.resetValidation();
+  popupWithAddForm.open();
+});

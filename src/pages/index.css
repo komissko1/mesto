@@ -49,7 +49,6 @@
 @import url(../blocks/place/__image/place__image.css);
 @import url(../blocks/place/__like-button/place__like-button.css);
 @import url(../blocks/place/__like-counter/place__like-counter.css);
-@import url(../blocks/place/__like-button/_active/place__like-button_active.css);
 @import url(../blocks/place/__like-button/_inactive/place__like-button_inactive.css);
 @import url(../blocks/place/__name/place__name.css);
 @import url(../blocks/place/__trash-button/place__trash-button.css);

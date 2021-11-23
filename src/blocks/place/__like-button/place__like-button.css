@@ -7,6 +7,7 @@
   background-position: center;
   border-style: none;
   background-repeat: no-repeat;
+  background-image: url(../../../images/like-active.svg);
   transition: opacity .3s ease-in-out;
 }
 

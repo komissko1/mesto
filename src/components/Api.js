@@ -50,16 +50,35 @@ export default class Api {
     });
   }
 
-  deleteCardData(cardId) {
-    console.log(`this._cardsUrl${cardId}`);
-    return fetch(`this._cardsUrl${cardId}`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({
-        name: newName,
-        about: newJob,
-      }),
-    }).then((res) => {
+  deleteCardData(itemId) {
+    return fetch(`${this._cardsUrl}${itemId}`, {
+      method: "DELETE",
+      headers: this._headers})
+      .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Server is not responding");
+    });
+  }
+
+  addLike(itemId) {
+    return fetch(`${this._cardsUrl}likes/${itemId}`, {
+      method: "PUT",
+      headers: this._headers})
+      .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Server is not responding");
+    });
+  }
+
+  deleteLike(itemId) {
+    return fetch(`${this._cardsUrl}likes/${itemId}`, {
+      method: "DELETE",
+      headers: this._headers})
+      .then((res) => {
       if (res.ok) {
         return res.json();
       }
