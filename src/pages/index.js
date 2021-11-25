@@ -6,7 +6,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 import PopupWithWarning from "../components/PopupWithWarning.js";
-// import "./index.css";
+import "./index.css";
 import { formSelectorsConfig } from "../utils/constants.js";
 
 const cardContainer = document.querySelector(".places");

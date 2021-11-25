@@ -66,13 +66,13 @@ export default class Card {
     this._cardLikeButton.classList.toggle("place__like-button_inactive");
     this._cardLikeCount.textContent = likes.length;
     this._likes = likes;
-    }
+  }
 
-    generateCard(userId) {
-      this._element = this._getTemplate();
-      this._cardImage = this._element.querySelector(".place__image");
-      this._cardLikeButton = this._element.querySelector(".place__like-button");
-      this._cardLikeCount = this._element.querySelector(".place__like-counter");
+  generateCard(userId) {
+    this._element = this._getTemplate();
+    this._cardImage = this._element.querySelector(".place__image");
+    this._cardLikeButton = this._element.querySelector(".place__like-button");
+    this._cardLikeCount = this._element.querySelector(".place__like-counter");
     this._cardImage.src = this._src;
     this._cardImage.alt = this._title;
     this._element.querySelector(".place__name").textContent = this._title;
