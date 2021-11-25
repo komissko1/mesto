@@ -5,12 +5,13 @@ export default class Api {
       (this._headers = apiConfig.headers);
   }
 
-  async getCardsData() {
-    const res = await fetch(this._cardsUrl, { headers: this._headers });
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Server is not responding");
+  getCardsData() {
+    return fetch(this._cardsUrl, { headers: this._headers }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Server is not responding");
+    });
   }
 
   getUserData() {
@@ -22,19 +23,20 @@ export default class Api {
     });
   }
 
-  async postCardData(newName, newLink) {
-    const res = await fetch(this._cardsUrl, {
+  postCardData(newName, newLink) {
+    return fetch(this._cardsUrl, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
         name: newName,
         link: newLink,
       }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Server is not responding");
     });
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject("Server is not responding");
   }
 
   patchUserData(newName, newJob) {
