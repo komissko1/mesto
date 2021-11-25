@@ -26,6 +26,14 @@ export default class PopupWithForm extends Popup {
     return this._cardInfo;
   }
 
+  getAvatarInfo() {
+    this._getInputValues();
+    this._avatarInfo = {
+      link: this._inputValues['avatar'],
+    };
+    return this._avatarInfo;
+  }
+
 
   setEventListeners() {
     this._form.addEventListener("submit", this._submitForm);

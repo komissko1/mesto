@@ -31,7 +31,10 @@ export default class Api {
         link: newLink,
       }),
     });
-    return await res.json();
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject("Server is not responding");
   }
 
   patchUserData(newName, newJob) {
@@ -53,8 +56,8 @@ export default class Api {
   deleteCardData(itemId) {
     return fetch(`${this._cardsUrl}${itemId}`, {
       method: "DELETE",
-      headers: this._headers})
-      .then((res) => {
+      headers: this._headers,
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -65,8 +68,8 @@ export default class Api {
   addLike(itemId) {
     return fetch(`${this._cardsUrl}likes/${itemId}`, {
       method: "PUT",
-      headers: this._headers})
-      .then((res) => {
+      headers: this._headers,
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -77,8 +80,21 @@ export default class Api {
   deleteLike(itemId) {
     return fetch(`${this._cardsUrl}likes/${itemId}`, {
       method: "DELETE",
-      headers: this._headers})
-      .then((res) => {
+      headers: this._headers,
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Server is not responding");
+    });
+  }
+
+  patchAvatar(avatarInfo) {
+    return fetch(`${this._userUrl}avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({ avatar: avatarInfo }),
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
