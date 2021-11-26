@@ -129,7 +129,7 @@ const popupWithAddForm = new PopupWithForm({
   submitForm: (inputs) => {
     popupWithAddForm.renderLoading(true, "save");
     api
-      .postCardData(inputs['name'], inputs['link'])
+      .postCardData(inputs['cardName'], inputs['cardLink'])
       .then((res) => {
         sectionWithCards.prependItem(cardRenderer(res, res.owner._id));
         popupWithAddForm.close();
@@ -193,7 +193,7 @@ const popupWithAvatar = new PopupWithForm({
   submitForm: (inputs) => {
     popupWithAvatar.renderLoading(true, "save");
     api
-      .patchAvatar(inputs['link'])
+      .patchAvatar(inputs['avatarLink'])
       .then((res) => {
         currentUser.setUserInfo(res);
         currentUser.renderUserInfo();
