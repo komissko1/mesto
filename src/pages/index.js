@@ -6,7 +6,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 import PopupWithWarning from "../components/PopupWithWarning.js";
-import "./index.css";
+// import "./index.css";
 import { formSelectorsConfig } from "../utils/constants.js";
 
 const cardContainer = document.querySelector(".places");
@@ -27,28 +27,28 @@ const avatarForm = popupAvatar.querySelector(".form");
 const userNameSelector = document.querySelector(".profile__user-name");
 const userJobSelector = document.querySelector(".profile__user-job");
 const userPicSelector = document.querySelector(".profile__user-foto");
-const inputName = popupEdit.querySelector("#userName");
-const inputJob = popupEdit.querySelector("#userJob");
+const inputName = popupEdit.querySelector("#name");
+const inputJob = popupEdit.querySelector("#job");
 
 const apiConfig = {
-  cardsUrl: "https://mesto.nomoreparties.co/v1/cohort-30/cards/",
-  userUrl: "https://mesto.nomoreparties.co/v1/cohort-30/users/me/",
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-30/",
   headers: {
     authorization: "885c2761-9e20-4ba5-8dc0-769b8411ad33",
     "Content-Type": "application/json",
   },
 };
-var sectionWithCards;
+let sectionWithCards;
+let cardForDelete;
 
 // ====Initial user and cards request=========
 
 function apiRequest() {
   api
     .getUserData()
-    .then((user) => {
-      currentUser.setUserInfo(user.name, user.about);
-      currentUser.setUserAvatar(user.avatar);
-      initialCardsRendering(user._id);
+    .then((res) => {
+      currentUser.setUserInfo(res);
+      currentUser.renderUserInfo();
+      initialCardsRendering(currentUser.id);
     })
     .catch((err) => console.log(err));
 }
@@ -85,14 +85,14 @@ function cardRenderer(item, userId) {
       handleLikeClick: () => {
         if (cardItem.checkCurrentLikeState(userId)) {
           api
-            .deleteLike(cardItem._card._id)
+            .deleteLike(cardItem.getCardId())
             .then((res) => {
               cardItem.setLikesState(res.likes);
             })
             .catch((err) => console.log(err));
         } else {
           api
-            .addLike(cardItem._card._id)
+            .addLike(cardItem.getCardId())
             .then((res) => {
               cardItem.setLikesState(res.likes);
             })
@@ -100,21 +100,7 @@ function cardRenderer(item, userId) {
         }
       },
       handleDeleteIconClick: () => {
-        const popupWithDeleteWarning = new PopupWithWarning({
-          popupSelector: popupDelete,
-          submitForm: () => {
-            toggleLoader(popupDelete, true, "delete");
-            api
-              .deleteCardData(item._id)
-              .then(() => {
-                cardItem.deleteCard();
-                toggleLoader(popupDelete, false, "delete");
-                popupWithDeleteWarning.close();
-              })
-              .catch((err) => console.log(err));
-          },
-        });
-        popupWithDeleteWarning.setEventListeners();
+        cardForDelete = cardItem;
         popupWithDeleteWarning.open();
       },
     },
@@ -122,31 +108,6 @@ function cardRenderer(item, userId) {
   );
   const cardElement = cardItem.generateCard(userId);
   return cardElement;
-}
-
-// ==== Loader effect switcher ========
-
-function toggleLoader(popupSelector, buttonState, method) {
-  const saveButton = popupSelector.querySelector(".form__save-button");
-  if (buttonState) {
-    switch (method) {
-      case "save":
-        saveButton.textContent = "Сохранить...";
-        break;
-      case "delete":
-        saveButton.textContent = "Удаление...";
-        break;
-    }
-  } else {
-    switch (method) {
-      case "save":
-        saveButton.textContent = "Сохранить";
-        break;
-      case "delete":
-        saveButton.textContent = "Да";
-        break;
-    }
-  }
 }
 
 //============MAIN CONTROLLER CODE===============
@@ -165,17 +126,16 @@ apiRequest();
 
 const popupWithAddForm = new PopupWithForm({
   popupSelector: popupAdd,
-  submitForm: () => {
-    toggleLoader(popupAdd, true, "save");
-    const cardInfo = popupWithAddForm.getCardInfo();
+  submitForm: (inputs) => {
+    popupWithAddForm.renderLoading(true, "save");
     api
-      .postCardData(cardInfo.name, cardInfo.link)
+      .postCardData(inputs['name'], inputs['link'])
       .then((res) => {
         sectionWithCards.prependItem(cardRenderer(res, res.owner._id));
-        toggleLoader(popupAdd, false, "save");
         popupWithAddForm.close();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => popupWithAddForm.renderLoading(false, "save"));
   },
 });
 
@@ -193,20 +153,19 @@ addButton.addEventListener("click", () => {
 
 // ====Popup with User Edit form ========
 
-const user = new UserInfo(userNameSelector, userJobSelector);
-
 const popupWithEditForm = new PopupWithForm({
   popupSelector: popupEdit,
-  submitForm: () => {
-    toggleLoader(popupEdit, true, "save");
+  submitForm: (inputs) => {
+    popupWithEditForm.renderLoading(true, "save");
     api
-      .patchUserData(inputName.value, inputJob.value)
-      .then(() => {
-        user.setUserInfo(inputName.value, inputJob.value);
-        toggleLoader(popupEdit, false, "save");
+    .patchUserData(inputs['name'], inputs['job'])
+    .then((res) => {
+        currentUser.setUserInfo(res);
+        currentUser.renderUserInfo();
         popupWithEditForm.close();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => popupWithEditForm.renderLoading(false, "save"));
   },
 });
 const editFormValidation = new FormValidator(formSelectorsConfig, editForm);
@@ -217,9 +176,8 @@ popupWithEditForm.setEventListeners();
 // ==== User Edit button listener ========
 
 editButton.addEventListener("click", () => {
-  const userData = user.getUserInfo();
-  inputName.value = userData.name;
-  inputJob.value = userData.job;
+  inputName.value = currentUser.name;
+  inputJob.value = currentUser.about;
   popupWithEditForm.open();
 });
 
@@ -228,21 +186,21 @@ editButton.addEventListener("click", () => {
 const popupWithImage = new PopupWithImage(popupImageView);
 popupWithImage.setEventListeners();
 
-// ====Popup with avatar ========
+// ====Popup with avatar edit form ========
 
 const popupWithAvatar = new PopupWithForm({
   popupSelector: popupAvatar,
-  submitForm: () => {
-    toggleLoader(popupAvatar, true, "save");
-    const avatarInfo = popupWithAvatar.getAvatarInfo();
+  submitForm: (inputs) => {
+    popupWithAvatar.renderLoading(true, "save");
     api
-      .patchAvatar(avatarInfo.link)
+      .patchAvatar(inputs['link'])
       .then((res) => {
-        currentUser.setUserAvatar(res.avatar);
-        toggleLoader(popupAvatar, false, "save");
+        currentUser.setUserInfo(res);
+        currentUser.renderUserInfo();
         popupWithAvatar.close();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => popupWithAvatar.renderLoading(false, "save"));
   },
 });
 const avatarFormValidation = new FormValidator(formSelectorsConfig, avatarForm);
@@ -255,3 +213,22 @@ avatarButton.addEventListener("click", () => {
   avatarFormValidation.resetValidation();
   popupWithAvatar.open();
 });
+
+
+// ==== Popup with Delete Warning Form ========
+
+const popupWithDeleteWarning = new PopupWithWarning({
+  popupSelector: popupDelete,
+  submitForm: () => {
+    popupWithDeleteWarning.renderLoading(true, "delete");
+    api
+      .deleteCardData(cardForDelete.getCardId())
+      .then(() => {
+        cardForDelete.deleteCard();
+        popupWithDeleteWarning.close();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => popupWithDeleteWarning.renderLoading(false, "delete"));
+  },
+});
+popupWithDeleteWarning.setEventListeners();

@@ -1,26 +1,28 @@
 export default class Api {
   constructor(apiConfig) {
-    (this._cardsUrl = apiConfig.cardsUrl),
-      (this._userUrl = apiConfig.userUrl),
+    (this._baseUrl = apiConfig.baseUrl),
+      (this._cardsUrl = `${this._baseUrl}cards/`),
+      (this._userUrl = `${this._baseUrl}users/me/`),
       (this._headers = apiConfig.headers);
   }
 
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject("Server is not responding");
+  }
+
   getCardsData() {
-    return fetch(this._cardsUrl, { headers: this._headers }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    return fetch(this._cardsUrl, { headers: this._headers }).then(
+      this._checkResponse
+    );
   }
 
   getUserData() {
-    return fetch(this._userUrl, { headers: this._headers }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    return fetch(this._userUrl, { headers: this._headers }).then(
+      this._checkResponse
+    );
   }
 
   postCardData(newName, newLink) {
@@ -31,12 +33,7 @@ export default class Api {
         name: newName,
         link: newLink,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    }).then(this._checkResponse);
   }
 
   patchUserData(newName, newJob) {
@@ -47,48 +44,28 @@ export default class Api {
         name: newName,
         about: newJob,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    }).then(this._checkResponse);
   }
 
   deleteCardData(itemId) {
     return fetch(`${this._cardsUrl}${itemId}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    }).then(this._checkResponse);
   }
 
   addLike(itemId) {
     return fetch(`${this._cardsUrl}likes/${itemId}`, {
       method: "PUT",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    }).then(this._checkResponse);
   }
 
   deleteLike(itemId) {
     return fetch(`${this._cardsUrl}likes/${itemId}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    }).then(this._checkResponse);
   }
 
   patchAvatar(avatarInfo) {
@@ -96,11 +73,6 @@ export default class Api {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({ avatar: avatarInfo }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Server is not responding");
-    });
+    }).then(this._checkResponse);
   }
 }

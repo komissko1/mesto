@@ -32,6 +32,10 @@ export default class Card {
       .addEventListener("click", this._handleDeleteIconClick);
   }
 
+  getCardId () {
+    return this._card._id
+  }
+
   deleteCard() {
     const thisCard = this._cardDeleteButton.closest(".place");
     thisCard
